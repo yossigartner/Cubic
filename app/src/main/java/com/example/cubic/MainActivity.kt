@@ -6,6 +6,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.cubic.hanlders.BluetoothHandler
@@ -40,9 +41,10 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(this.bluetoothHandler.receiver)
+        this.bluetoothHandler.closeConnection()
     }
 
-    fun discoverAndConnectToESPDevice() {
+    private fun discoverAndConnectToESPDevice() {
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(this.bluetoothHandler.receiver, filter)
         this.bluetoothHandler.startDiscovery();

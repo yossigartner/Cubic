@@ -12,6 +12,11 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
 
+enum class Actions(val value: String) {
+    Measure("0"),
+    Disconnect("1")
+}
+
 class BluetoothHandler {
     private var bluetoothAdapter: BluetoothAdapter;
     private lateinit var connectionThread: ConnectThread;
@@ -33,7 +38,7 @@ class BluetoothHandler {
                     val deviceHardwareAddress = device.address // MAC address
                     if (deviceName == "ESP32test") {
                         connectionThread = ConnectThread(device);
-                        connectionThread.run();
+                        connectionThread.start();
                     }
                     Log.d("Bluetooth Handler", "Device Found:$deviceName $deviceHardwareAddress");
                 }
@@ -43,6 +48,11 @@ class BluetoothHandler {
 
     public fun startDiscovery(): Boolean {
         return this.bluetoothAdapter.startDiscovery();
+    }
+
+    public fun closeConnection() {
+        this.connectionThread.writeMessage(Actions.Disconnect)
+        this.connectionThread.cancel();
     }
 
     private inner class ConnectThread(device: BluetoothDevice) : Thread() {
@@ -66,14 +76,20 @@ class BluetoothHandler {
             }
         }
 
+        public fun writeMessage(messageCode: Actions) {
+            val mmOutStream: OutputStream? = mmSocket?.outputStream
+            try {
+                mmOutStream?.write(messageCode.value.toByteArray())
+            } catch (e: IOException) {
+                Log.e("Bluetooth Handler", "Error sending message to host", e)
+            }
+        }
+
         private fun manageConnectedSocket(socket: BluetoothSocket) {
             val mmInStream: InputStream = socket.inputStream
-            val mmOutStream: OutputStream = socket.outputStream
             val mmBuffer: ByteArray = ByteArray(1024)
             var numBytes: Int
-            var stringBeginChar = '#'
-            var stringEndChar = '$'
-            var inputString = mutableListOf<Char>()
+            Log.d("Bluetooth Handler", "Start connection  with socket")
             while (true) {
                 // Read from the InputStream.
                 numBytes = try {
@@ -82,7 +98,8 @@ class BluetoothHandler {
                     Log.d("Bluetooth Handler", "Input stream was disconnected", e)
                     break
                 }
-                Log.d("Bluetooth Handler", "$numBytes, ${(String(mmBuffer.copyOfRange(0,numBytes)))}")
+                Log.d("Bluetooth Handler", "$numBytes, ${(String(mmBuffer.copyOfRange(0, numBytes)))}")
+                writeMessage(Actions.Measure);
             }
         }
 
