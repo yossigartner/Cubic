@@ -20,6 +20,7 @@ enum class Actions(val value: String) {
 class BluetoothHandler {
     private var bluetoothAdapter: BluetoothAdapter;
     private lateinit var connectionThread: ConnectThread;
+    private var TAG = "Bluetooth Handler"
 
     constructor() {
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -36,23 +37,28 @@ class BluetoothHandler {
                             intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
                     val deviceName = device.name
                     val deviceHardwareAddress = device.address // MAC address
+                    Log.d(TAG, "Device Found:$deviceName $deviceHardwareAddress");
                     if (deviceName == "ESP32test") {
                         connectionThread = ConnectThread(device);
                         connectionThread.start();
                     }
-                    Log.d("Bluetooth Handler", "Device Found:$deviceName $deviceHardwareAddress");
                 }
             }
         }
     }
 
     public fun startDiscovery(): Boolean {
+        Log.d(TAG, "Looking for ESP32 device...")
         return this.bluetoothAdapter.startDiscovery();
     }
 
     public fun closeConnection() {
-        this.connectionThread.writeMessage(Actions.Disconnect)
+        this.connectionThread.writeMessage(Actions.Disconnect);
         this.connectionThread.cancel();
+    }
+
+    public fun RequestMeasure() {
+        this.connectionThread.writeMessage(Actions.Measure);
     }
 
     private inner class ConnectThread(device: BluetoothDevice) : Thread() {
@@ -69,7 +75,7 @@ class BluetoothHandler {
                 // Connect to the remote device through the socket. This call blocks
                 // until it succeeds or throws an exception.
                 socket.connect()
-
+                Log.d(TAG, "Established connection successfully with ESP32")
                 // The connection attempt succeeded. Perform work associated with
                 // the connection in a separate thread.
                 this.manageConnectedSocket(socket)
@@ -81,7 +87,7 @@ class BluetoothHandler {
             try {
                 mmOutStream?.write(messageCode.value.toByteArray())
             } catch (e: IOException) {
-                Log.e("Bluetooth Handler", "Error sending message to host", e)
+                Log.e(TAG, "Error sending message to host", e)
             }
         }
 
@@ -89,17 +95,15 @@ class BluetoothHandler {
             val mmInStream: InputStream = socket.inputStream
             val mmBuffer: ByteArray = ByteArray(1024)
             var numBytes: Int
-            Log.d("Bluetooth Handler", "Start connection  with socket")
             while (true) {
                 // Read from the InputStream.
                 numBytes = try {
                     mmInStream.read(mmBuffer)
                 } catch (e: IOException) {
-                    Log.d("Bluetooth Handler", "Input stream was disconnected", e)
+                    Log.d(TAG, "Input stream was disconnected", e)
                     break
                 }
-                Log.d("Bluetooth Handler", "$numBytes, ${(String(mmBuffer.copyOfRange(0, numBytes)))}")
-                writeMessage(Actions.Measure);
+                Log.d(TAG, "Incoming Message: $numBytes, ${(String(mmBuffer.copyOfRange(0, numBytes)))}")
             }
         }
 
@@ -108,7 +112,7 @@ class BluetoothHandler {
             try {
                 mmSocket?.close()
             } catch (e: IOException) {
-                Log.e("Bluetooth Handler", "Could not close the client socket", e)
+                Log.e(TAG, "Could not close the client socket", e)
             }
         }
     }
