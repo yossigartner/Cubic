@@ -1,16 +1,20 @@
 package com.example.cubic.hanlders
 
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
+import kotlin.collections.HashSet
 
 enum class Actions(val value: String) {
     Measure("0"),
@@ -21,9 +25,20 @@ class BluetoothHandler {
     private var bluetoothAdapter: BluetoothAdapter;
     private lateinit var connectionThread: ConnectThread;
     private var TAG = "Bluetooth Handler"
+    private var observers = HashSet<Observer>();
+    private var connectivityObservers = HashSet<Observer>();
+    private var handler = Handler(Looper.getMainLooper())
 
     constructor() {
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    }
+
+    public fun registerObserver(o: Observer) {
+        this.observers.add(o);
+    }
+
+    public fun registerConnectivityObserver(o: Observer) {
+        this.connectivityObservers.add(o);
     }
 
     public val receiver = object : BroadcastReceiver() {
@@ -57,7 +72,7 @@ class BluetoothHandler {
         this.connectionThread.cancel();
     }
 
-    public fun RequestMeasure() {
+    public fun requestMeasure() {
         this.connectionThread.writeMessage(Actions.Measure);
     }
 
@@ -75,6 +90,9 @@ class BluetoothHandler {
                 // Connect to the remote device through the socket. This call blocks
                 // until it succeeds or throws an exception.
                 socket.connect()
+                handler.post(Runnable {
+                    connectivityObservers.forEach { o -> o.update(null, true) }
+                })
                 Log.d(TAG, "Established connection successfully with ESP32")
                 // The connection attempt succeeded. Perform work associated with
                 // the connection in a separate thread.
@@ -103,7 +121,12 @@ class BluetoothHandler {
                     Log.d(TAG, "Input stream was disconnected", e)
                     break
                 }
-                Log.d(TAG, "Incoming Message: $numBytes, ${(String(mmBuffer.copyOfRange(0, numBytes)))}")
+                var incomingString = (String(mmBuffer.copyOfRange(0, numBytes)));
+                Log.d(TAG, "Incoming Message: $numBytes, $incomingString")
+                handler.post(Runnable() {
+                    observers.forEach { o -> o.update(null, incomingString) }
+                })
+
             }
         }
 
@@ -111,6 +134,7 @@ class BluetoothHandler {
         fun cancel() {
             try {
                 mmSocket?.close()
+                this.interrupt();
             } catch (e: IOException) {
                 Log.e(TAG, "Could not close the client socket", e)
             }
