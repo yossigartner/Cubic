@@ -19,6 +19,7 @@
         app:layout_constraintVertical_bias="0.503" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="108dp"
@@ -138,6 +139,20 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginTop="27dp"
+            android:background="#000000"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="#FFFFFF"
+            app:labelVisibilityMode="auto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/measurementResultLayout"
+            app:menu="@menu/bottom_navigation_menu"
+            tools:layout_editor_absoluteX="0dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
