@@ -43,10 +43,10 @@
 
         <Button
             android:id="@+id/measureButton"
-            android:layout_width="360dp"
-            android:layout_height="59dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_width="328dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginLeft="17dp"
             android:layout_marginTop="360dp"
             android:layout_marginEnd="17dp"
             android:layout_marginRight="17dp"
@@ -57,23 +57,23 @@
             android:textColor="#bdbdbd"
             app:elevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.483"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/measurementResultLayout"
-            android:layout_width="233dp"
-            android:layout_height="173dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginRight="80dp"
-            android:layout_marginBottom="161dp"
+            android:layout_width="329dp"
+            android:layout_height="263dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="74dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/measureButton">
 
@@ -81,8 +81,8 @@
                 android:id="@+id/resultTextView"
                 android:layout_width="151dp"
                 android:layout_height="72dp"
-                android:layout_marginStart="41dp"
-                android:layout_marginLeft="41dp"
+                android:layout_marginStart="89dp"
+                android:layout_marginLeft="89dp"
                 android:fontFamily="sans-serif-condensed"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -92,11 +92,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/resultHeaderTextView" />
 
             <TextView
+                android:id="@+id/resultMeasureSystemTextView"
+                android:layout_width="151dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="89dp"
+                android:layout_marginLeft="89dp"
+                android:fontFamily="sans-serif-condensed-light"
+                android:gravity="center"
+                android:text="SQUARE METER"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resultTextView" />
+
+            <TextView
                 android:id="@+id/resultHeaderTextView"
                 android:layout_width="151dp"
                 android:layout_height="28dp"
-                android:layout_marginStart="41dp"
-                android:layout_marginLeft="41dp"
+                android:layout_marginStart="89dp"
+                android:layout_marginLeft="89dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-condensed-light"
                 android:gravity="center"
@@ -108,21 +122,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/resultMeasureSystemTextView"
-                android:layout_width="151dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="41dp"
-                android:layout_marginLeft="41dp"
-                android:layout_marginBottom="33dp"
-                android:fontFamily="sans-serif-condensed-light"
-                android:gravity="center"
-                android:text="SQUARE METER"
+            <Button
+                android:id="@+id/saveMeasureButton"
+                android:layout_width="328dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="28dp"
+                android:background="@drawable/save_btn_background"
+                android:text="SAVE"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/resultTextView" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
