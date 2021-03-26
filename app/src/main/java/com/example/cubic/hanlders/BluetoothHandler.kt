@@ -13,6 +13,7 @@ import android.util.Log
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -122,9 +123,10 @@ class BluetoothHandler {
                     break
                 }
                 var incomingString = (String(mmBuffer.copyOfRange(0, numBytes)));
+                var floatValue = DecimalFormat("#.##").format(incomingString.toFloat());
                 Log.d(TAG, "Incoming Message: $numBytes, $incomingString")
                 handler.post(Runnable() {
-                    observers.forEach { o -> o.update(null, incomingString) }
+                    observers.forEach { o -> o.update(null, floatValue) }
                 })
 
             }

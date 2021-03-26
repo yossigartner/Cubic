@@ -5,11 +5,13 @@ import android.app.Activity
 import android.bluetooth.BluetoothDevice
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.cubic.hanlders.BluetoothHandler
@@ -23,10 +25,21 @@ class ObserverTextView(private val textView: TextView) : Observer {
     }
 }
 
+class ObserverResultLayout(private val constraintLayout: ConstraintLayout) : Observer {
+    override fun update(o: Observable?, arg: Any?) {
+        if (arg != null) {
+            constraintLayout.visibility = View.VISIBLE;
+        }
+    }
+}
+
 class ConnectivityObserver(private val button: Button) : Observer {
     override fun update(o: Observable?, arg: Any?) {
         if (arg != null) {
             button.isEnabled = arg as Boolean
+            var backgroundTransition = button.background as TransitionDrawable;
+            backgroundTransition.startTransition(200)
+            button.setTextColor(Color.parseColor("#ffffff"))
         }
     }
 }
@@ -36,9 +49,11 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val resultView = ObserverTextView(findViewById<TextView>(R.id.resultTextView))
+        val resultTextView = ObserverTextView(findViewById<TextView>(R.id.resultTextView))
+        var resultLayout = ObserverResultLayout(findViewById<ConstraintLayout>(R.id.measurementResultLayout))
         var measureButton = ConnectivityObserver(findViewById<Button>(R.id.measureButton))
-        bluetoothHandler.registerObserver(resultView);
+        bluetoothHandler.registerObserver(resultTextView);
+        bluetoothHandler.registerObserver(resultLayout);
         bluetoothHandler.registerConnectivityObserver(measureButton);
         if (ContextCompat.checkSelfPermission(baseContext,
                         Manifest.permission.ACCESS_FINE_LOCATION)
