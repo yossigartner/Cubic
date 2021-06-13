@@ -3,6 +3,7 @@ package com.example.cubic
 import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothDevice
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -63,7 +64,15 @@ class MainActivity : Activity() {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     1)
         } else {
-            discoverAndConnectToESPDevice()
+            // TODO: remove comment, remove mocks
+            //discoverAndConnectToESPDevice()
+
+            // MOCKS
+            measureButton.update(null,true);
+            val result = 25.666
+            resultLayout.update(null,result);
+            resultTextView.update(null,result)
+
         }
 
     }
@@ -89,5 +98,13 @@ class MainActivity : Activity() {
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(this.bluetoothHandler.receiver, filter)
         this.bluetoothHandler.startDiscovery();
+    }
+
+    public fun onSaveMeasureButtonClick(view:View) {
+        val resultTextView = findViewById<TextView>(R.id.resultTextView);
+        val intent = Intent(this,SaveMeasurement::class.java).apply {
+            putExtra(getString(R.string.EXTRA_MEASUREMENT_RESULT),resultTextView.text.toString().toFloat())
+        }
+        startActivity(intent);
     }
 }

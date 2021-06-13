@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cubic</string>
+    <string name="EXTRA_MEASUREMENT_RESULT">MEASUREMENT_RESULT</string>
 </resources>
