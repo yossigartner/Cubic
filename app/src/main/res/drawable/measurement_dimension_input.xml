@@ -15,9 +15,8 @@
             />
 
         <path
-            android:pathData="M0 0H358V48H0V0Z"
-            android:strokeWidth="2"
-            android:strokeColor="#FFAFC8"
+            android:pathData="M0 0V48H358V0"
+            android:fillColor="#8F000000"
             />
 
     </group>
