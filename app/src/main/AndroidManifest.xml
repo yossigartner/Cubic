@@ -13,13 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cubic">
-        <activity android:name=".SaveMeasurement" android:screenOrientation="portrait">
-        </activity>
+        <activity android:name=".activities.SavedMeasurements" android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.SaveMeasurement"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,4 +1,4 @@
-package com.example.cubic
+package com.example.cubic.activities
 
 import android.Manifest
 import android.app.Activity
@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.cubic.R
 import com.example.cubic.hanlders.BluetoothHandler
 import java.util.*
 
