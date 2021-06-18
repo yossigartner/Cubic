@@ -52,33 +52,42 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val resultTextView = ObserverTextView(findViewById<TextView>(R.id.resultTextView))
-        var resultLayout = ObserverResultLayout(findViewById<ConstraintLayout>(R.id.measurementResultLayout))
+        var resultLayout =
+            ObserverResultLayout(findViewById<ConstraintLayout>(R.id.measurementResultLayout))
         var measureButton = ConnectivityObserver(findViewById<Button>(R.id.measureButton))
         bluetoothHandler.registerObserver(resultTextView);
         bluetoothHandler.registerObserver(resultLayout);
         bluetoothHandler.registerConnectivityObserver(measureButton);
-        if (ContextCompat.checkSelfPermission(baseContext,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                baseContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
             ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    1)
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
         } else {
             // TODO: remove comment, remove mocks
             //discoverAndConnectToESPDevice()
 
             // MOCKS
-            measureButton.update(null,true);
+            measureButton.update(null, true);
             val result = 25.666
-            resultLayout.update(null,result);
-            resultTextView.update(null,result)
+            resultLayout.update(null, result);
+            resultTextView.update(null, result)
 
         }
 
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             discoverAndConnectToESPDevice()
@@ -101,11 +110,19 @@ class MainActivity : Activity() {
         this.bluetoothHandler.startDiscovery();
     }
 
-    public fun onSaveMeasureButtonClick(view:View) {
+    public fun onSaveMeasureButtonClick(view: View) {
         val resultTextView = findViewById<TextView>(R.id.resultTextView);
-        val intent = Intent(this,SaveMeasurement::class.java).apply {
-            putExtra(getString(R.string.EXTRA_MEASUREMENT_RESULT),resultTextView.text.toString().toFloat())
+        val intent = Intent(this, SaveMeasurement::class.java).apply {
+            putExtra(
+                getString(R.string.EXTRA_MEASUREMENT_RESULT),
+                resultTextView.text.toString().toFloat()
+            )
         }
+        startActivity(intent);
+    }
+
+    public fun onHistoryButtonClick(view: View) {
+        val intent = Intent(this, SavedMeasurements::class.java)
         startActivity(intent);
     }
 }

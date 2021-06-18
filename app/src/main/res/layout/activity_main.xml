@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     tools:context=".activities.MainActivity">
 
     <View
@@ -140,6 +139,26 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/historyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="335dp"
+            android:layout_marginLeft="335dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginRight="28dp"
+            android:layout_marginBottom="300dp"
+            android:background="#00FFFFFF"
+            android:onClick="onHistoryButtonClick"
+            android:src="@drawable/ic_history_32"
+            app:layout_constraintBottom_toTopOf="@+id/measureButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.818" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
