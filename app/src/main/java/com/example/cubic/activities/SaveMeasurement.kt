@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.DatePicker
@@ -30,6 +31,8 @@ class SaveMeasurement : FragmentActivity() {
     private lateinit var measurementLocationEditText: EditText
     private lateinit var measurementDimensionTextView: TextView
     private var handler = Handler(Looper.getMainLooper())
+
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_save_measurement)
@@ -40,7 +43,8 @@ class SaveMeasurement : FragmentActivity() {
         val measurementResult =
             intent.getFloatExtra(getString(R.string.EXTRA_MEASUREMENT_RESULT), 0f);
         Log.d(TAG, "$measurementResult")
-        measurementDimensionTextView.text = "$measurementResult SQUARED METER"
+        measurementDimensionTextView.text =
+            Html.fromHtml("${measurementResult}m&#xB2;", Html.FROM_HTML_MODE_COMPACT)
     }
 
     public fun rescan(view: View) {
