@@ -70,15 +70,7 @@ class MainActivity : Activity() {
                 1
             )
         } else {
-            // TODO: remove comment, remove mocks
-            //discoverAndConnectToESPDevice()
-
-            // MOCKS
-            measureButton.update(null, true);
-            val result = 25.666
-            resultLayout.update(null, result);
-            resultTextView.update(null, result)
-
+            discoverAndConnectToESPDevice()
         }
 
     }
