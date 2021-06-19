@@ -32,7 +32,7 @@
             android:layout_marginRight="111dp"
             android:layout_marginBottom="674dp"
             android:fontFamily="sans-serif-medium"
-            android:text="PAST MEASUREMENTS"
+            android:text="MEASUREMENT HISTORY"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
